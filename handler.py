@@ -94,28 +94,25 @@ def get_next_word_probabilities(sentence, tokenizer, device, model, top_k=2):
 @serve.deployment
 class Translator:
     def __init__(self):
-        # self.device = DEVICE
-        # aws_access_key_id = os.getenv('AWS_ACCESS_KEY_ID')
-        # aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
-        # download_directory_from_s3(aws_access_key_id, aws_secret_access_key, REGION, BUCKET, S3_DIRECTORY, MODEL_LOCAL_DIR)
-        # self.model, self.tokenizer = load_model(MODEL_LOCAL_DIR)
-        ray_serve_logger.info("INITTTTTT")
-
+        self.device = DEVICE
+        aws_access_key_id = os.getenv('AWS_ACCESS_KEY_ID')
+        aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+        download_directory_from_s3(aws_access_key_id, aws_secret_access_key, REGION, BUCKET, S3_DIRECTORY, MODEL_LOCAL_DIR)
+        self.model, self.tokenizer = load_model(MODEL_LOCAL_DIR)
 
     def translate(self, text: str) -> str:
         #return self.model(text)[0]["translation_text"]
         return "bbbbbbbbbbbb"
 
     async def __call__(self, req: starlette.requests.Request):
-        # req = await req.json()
-        # re = 'NO DATA - missing text field'
-        # if 'text' in req:
-        #     sentence = req['text']
-        #     re = get_next_word_probabilities(sentence, self.tokenizer, self.device, self.model, top_k=2)
-        # else:
-        #     ray_serve_logger.warning(f"Missing text field in the json  request = {req}")
-        # return re
-        return "HHHHHHEEEEEELLLLLOOOO"
+        req = await req.json()
+        re = 'NO DATA - missing text field'
+        if 'text' in req:
+            sentence = req['text']
+            re = get_next_word_probabilities(sentence, self.tokenizer, self.device, self.model, top_k=2)
+        else:
+            ray_serve_logger.warning(f"Missing text field in the json  request = {req}")
+        return re
 
 
 
